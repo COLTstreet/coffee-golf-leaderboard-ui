@@ -1,9 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
 @import "primeng/resources/themes/saga-green/theme.css";
+@import "primeng/resources/primeng.min.css";
 
 html,
 body {
     font-size: 12px !important;
     margin: 0;
     padding: 0;
+    background: #62bf66;
+}
+
+p-calendar > span > input { display: none; }
+p-calendar .p-icon {
+    height: 35px;
+    width: 35px;
 }

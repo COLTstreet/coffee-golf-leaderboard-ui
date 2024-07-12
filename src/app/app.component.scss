@@ -35,4 +35,30 @@
     color: white;
     text-align: center;
     font-family: 'Signor Black', sans-serif;
+    position: relative;
+}
+
+.scorecard {
+    font-family: 'Signor Black', sans-serif;
+    border: 1px solid black;
+    margin: 5px 20px;
+    font-size: 20px;
+    background: #8de59f;
+    border-radius: 5px;
+}
+
+.rank {
+    border: 1px solid black;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: block;
+    background: white;
+}
+
+.calendar-container {
+    position: absolute;
+    left: 0;
+    width: 100px;
+    top: -25px;
 }

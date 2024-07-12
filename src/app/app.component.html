@@ -4,20 +4,28 @@
       <span class="hero-date">{{selectedDate | date : 'shortDate'}}</span>
     </div>
     <div class="hero-title">
-      LEADERBOARD
+      <div class="calendar-container">
+        <p-calendar [(ngModel)]="selectedDate" [touchUI]="true" [iconDisplay]="'input'" [showIcon]="true"
+          [readonlyInput]="true" [showOnFocus]="false" inputId="buttondisplay" (ngModelChange)="updateDataByDay()" />
+      </div>
+      <div>
+        LEADERBOARD
+      </div>
     </div>
   </div>
 </div>
 @for(score of scores; track score; let i = $index) {
-  <div class="flex flex-row w-full">
-    <div>
-      {{i + 1}}
-    </div>
-    <div>
-      {{score.nickname}}
-    </div>
-    <div>
-      {{score.strokes}}
+<div class="grid scorecard">
+  <div class="col-2">
+    <div class="text-center font-bold p-2">
+      <span class="rank">{{i + 1}}</span>
     </div>
   </div>
+  <div class="col-8">
+    <div class="font-bold p-2">{{score.nickname}}</div>
+  </div>
+  <div class="col-2">
+    <div class="text-right font-bold p-2">{{score.strokes}}</div>
+  </div>
+</div>
 }
