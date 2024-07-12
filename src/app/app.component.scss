@@ -1,0 +1,38 @@
+@font-face {
+    font-family: 'Signor Black';
+    src: url(../assets/fonts/Signor\ Black.ttf) format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.hero {
+    height: 250px;
+    width: 100%;
+    background-image: url(../assets/cg-bk.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.hero-content {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+.hero-date {
+    font-size: 30px;
+    font-weight: bold;
+    background: #e87d57;
+    padding: 5px;
+}
+
+.hero-title {
+    font-size: 50px;
+    font-weight: bolder;
+    background: #272727;
+    color: white;
+    text-align: center;
+    font-family: 'Signor Black', sans-serif;
+}
