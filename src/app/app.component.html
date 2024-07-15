@@ -1,13 +1,13 @@
 <div class="hero">
   <div class="hero-content">
-    <div class="text-right">
-      <span class="hero-date">{{selectedDate | date : 'shortDate'}}</span>
-    </div>
-    <div class="hero-title">
-      <div class="calendar-container">
+    <div class="flex flex-row justify-content-end text-right">
+      <div class="bg-orange" style="width: 50px;">
         <p-calendar [(ngModel)]="selectedDate" [touchUI]="true" [iconDisplay]="'input'" [showIcon]="true"
           [readonlyInput]="true" [showOnFocus]="false" inputId="buttondisplay" (ngModelChange)="updateDataByDay()" />
       </div>
+      <span class="bg-orange hero-date">{{selectedDate | date : 'shortDate'}}</span>
+    </div>
+    <div class="hero-title">
       <div class="ml-4">
         LEADERBOARD
       </div>
