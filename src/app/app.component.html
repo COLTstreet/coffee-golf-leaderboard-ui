@@ -5,7 +5,13 @@
         <p-calendar [(ngModel)]="selectedDate" [touchUI]="true" [iconDisplay]="'input'" [showIcon]="true"
           [readonlyInput]="true" [showOnFocus]="false" inputId="buttondisplay" (ngModelChange)="updateDataByDay()" />
       </div>
+      <div class="flex flex-wrap align-content-center justify-content-center bg-orange">
+        <p-button icon="pi pi-angle-left" [rounded]="true" [text]="true" severity="secondary" (click)="previousDay()"/>
+      </div>
       <span class="bg-orange hero-date">{{selectedDate | date : 'shortDate'}}</span>
+      <div class="flex flex-wrap align-content-center justify-content-center bg-orange">
+        <p-button icon="pi pi-angle-right" [rounded]="true" [text]="true" severity="secondary" (click)="nextDay()"/>
+      </div>
     </div>
     <div class="hero-title">
       <div class="ml-4">

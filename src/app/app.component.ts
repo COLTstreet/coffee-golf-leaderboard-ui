@@ -5,11 +5,12 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { CommonModule } from '@angular/common';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, CommonModule, CalendarModule],
+  imports: [RouterOutlet, FormsModule, CommonModule, CalendarModule, ButtonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [ConfirmationService, MessageService],
@@ -46,6 +47,18 @@ export class AppComponent {
     // this.getMonthlyLeaderboard();
   }
 
+  previousDay() {
+    this.selectedDate.setDate(this.selectedDate.getDate() - 1);
+    this.selectedDate = new Date(this.selectedDate.toLocaleDateString())
+    this.updateDataByDay()
+  }
+
+  nextDay() {
+    this.selectedDate.setDate(this.selectedDate.getDate() + 1);
+    this.selectedDate = new Date(this.selectedDate.toLocaleDateString())
+    this.updateDataByDay()
+  }
+
   updateDataByDay() {
     let callDate = `${this.months[this.selectedDate.getMonth()]}-${
       this.selectedDate.toLocaleDateString().split('/')[1]
@@ -62,6 +75,7 @@ export class AppComponent {
   getMonthlyLeaderboard() {
     let monthNum = this.selectedDate.getMonth() + 1;
     let daysInMonth = new Date(this.selectedDate.getFullYear(), monthNum, 0).getDate();
+    this.monthData = []
 
     let calls = 0
     for (let index = 1; index <= daysInMonth; index++) {
@@ -80,7 +94,6 @@ export class AppComponent {
 
   calculateScores(data: any, daysInMonth: any) {
     const uniqueNames = [...new Set(data.map((item: any) => item.name))];
-    console.log(uniqueNames)
 
     this.userScoreData = []
     for (let index = 0; index < uniqueNames.length; index++) {
@@ -91,26 +104,26 @@ export class AppComponent {
 
       userData = userData.filter((ele: any) => {
         let userDate = new Date(ele.timestamp.seconds * 1000)
-        console.log(userDate)
         return userDate.getMonth() === this.selectedDate.getMonth() ? true : false
       })
-      let total = 0;
-      for(let x = 0; x < userData.length; x++) {
-        total += Number(userData[x].strokes)
-
-        if(x === userData.length - 1) {
-          let temp = {
-            avatarUrl: userData[x].avatarUrl,
-            name: userData[x].name,
-            nickname: userData[x].nickname,
-            strokes: total
+      if(userData.length === daysInMonth) {
+        let total = 0;
+        for(let x = 0; x < userData.length; x++) {
+          total += Number(userData[x].strokes)
+  
+          if(x === userData.length - 1) {
+            let temp = {
+              avatarUrl: userData[x].avatarUrl,
+              name: userData[x].name,
+              nickname: userData[x].nickname,
+              strokes: total
+            }
+            this.userScoreData.push(temp)
           }
-          this.userScoreData.push(temp)
         }
       }
       
     }
     this.userScoreData.sort((a: any, b: any) =>a.strokes > b.strokes ? 1 : -1);
-    console.log(this.userScoreData)
   }
 }
