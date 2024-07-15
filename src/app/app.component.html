@@ -16,16 +16,21 @@
 </div>
 @for(score of scores; track score; let i = $index) {
 <div class="grid scorecard">
-  <div class="col-2">
+  <div class="col-2 flex flex-wrap align-content-center justify-content-center">
     <div class="text-center font-bold p-2">
       <span class="rank">{{i + 1}}</span>
     </div>
   </div>
-  <div class="col-8">
-    <div class="font-bold p-2">{{score.nickname}}</div>
+  <div class="col-8 flex mt-3">
+    <div class="w-2"><img src="{{score.avatarUrl}}" class="w-full border-circle" /></div>
+    <div class="font-bold p-2">
+      <div>{{score.nickname}}</div>
+    </div>
   </div>
-  <div class="col-2">
-    <div class="text-right font-bold p-2">{{score.strokes}}</div>
+  <div class="col-2 flex">
+    <div class="flex flex-wrap align-content-center justify-content-center text-right font-bold p-2">
+      <div>{{score.strokes}}</div>
+    </div>
   </div>
 </div>
 }
