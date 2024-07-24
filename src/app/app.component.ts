@@ -21,6 +21,7 @@ export class AppComponent {
   title = 'coffee-golf';
 
   public selectedDate: any;
+  public previousSelectedDate: any;
   public scores: any = [];
   public monthData: any[] = [];
   public userScoreData: any[] = [];
@@ -46,22 +47,26 @@ export class AppComponent {
     private messageService: MessageService
   ) {
     this.selectedDate = new Date();
-    this.updateDataByDay();
+    this.updateDataByDay(null);
   }
 
   previousDay() {
     this.selectedDate.setDate(this.selectedDate.getDate() - 1);
     this.selectedDate = new Date(this.selectedDate.toLocaleDateString())
-    this.updateDataByDay()
+    this.updateDataByDay(null)
   }
 
   nextDay() {
     this.selectedDate.setDate(this.selectedDate.getDate() + 1);
     this.selectedDate = new Date(this.selectedDate.toLocaleDateString())
-    this.updateDataByDay()
+    this.updateDataByDay(null)
   }
 
-  updateDataByDay() {
+  updateDataByDay(evt: any) {
+    if(evt) {
+      this.previousSelectedDate = this.selectedDate
+      this.selectedDate = evt
+    }
     let callDate = `${this.months[this.selectedDate.getMonth()]}-${
       this.selectedDate.toLocaleDateString().split('/')[1]
     }-${this.selectedDate.getFullYear()}`;
@@ -85,6 +90,9 @@ export class AppComponent {
 
     if(`${now.month()+1}-${now.date()}` === `${selected.month()+1}-${selected.date()}`) 
       daysInMonth = now.date()
+    if(now.month() === selected.month() ) {
+      daysInMonth = now.date()
+    }
 
     let calls = 0
     for (let index = 1; index <= daysInMonth; index++) {
@@ -119,7 +127,7 @@ export class AppComponent {
       // this.userScoreData.push(userData)
       if(userData.length > daysInMonth - 5) {
         this.uniqueNames.push(userData[0].nickname)
-        this.userScoreData.push(userData.sort((a: any, b: any) => moment(a.date) > moment(a.date) ? 1 : -1))
+        this.userScoreData.push(userData.sort((a: any, b: any) => moment(a.date) > moment(b.date) ? 1 : -1))
       //   let total = 0;
       //   for(let x = 0; x < userData.length; x++) {
       //     total += Number(userData[x].strokes)
@@ -144,7 +152,14 @@ export class AppComponent {
 
 
     const tableBody = document.querySelector('#data-table tbody');
+    if (tableBody) tableBody.innerHTML = '';
+
+
     const nameHeaders = document.querySelector('#name-headers');
+    nameHeaders!.innerHTML = ''
+    let dateHeader = document.createElement('th');
+    dateHeader.textContent = "Date";
+    nameHeaders!.appendChild(dateHeader);
 
     // Extract unique names for column headers
     const uniqueNames = [...new Set(d.flat().map((obj: any) => obj.name))];

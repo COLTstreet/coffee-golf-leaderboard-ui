@@ -2,8 +2,8 @@
   <div class="hero-content">
     <div class="flex flex-row justify-content-end text-right">
       <div class="bg-orange" style="width: 50px;">
-        <p-calendar [(ngModel)]="selectedDate" [touchUI]="true" [iconDisplay]="'input'" [showIcon]="true"
-          [readonlyInput]="true" [showOnFocus]="false" inputId="buttondisplay" (ngModelChange)="updateDataByDay()" />
+        <p-calendar [ngModel]="selectedDate" [touchUI]="true" [iconDisplay]="'input'" [showIcon]="true"
+          [readonlyInput]="true" [showOnFocus]="false" inputId="buttondisplay" (ngModelChange)="updateDataByDay($event)" />
       </div>
       <div class="flex flex-wrap align-content-center justify-content-center bg-orange">
         <p-button icon="pi pi-angle-left" [rounded]="true" [text]="true" severity="secondary" (click)="previousDay()" />
@@ -48,11 +48,9 @@
       <table id="data-table" class="w-full" style="table-layout: fixed;">
         <thead>
           <tr id="name-headers">
-            <th>Date</th>
           </tr>
         </thead>
-        <tbody>
-        </tbody>
+        <tbody></tbody>
       </table>
     </div>
   </p-tabPanel>
