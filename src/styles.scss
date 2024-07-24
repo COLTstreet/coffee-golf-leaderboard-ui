@@ -10,7 +10,10 @@ body {
     background: #62bf66;
 }
 
-p-calendar > span > input { display: none; }
+p-calendar>span>input {
+    display: none;
+}
+
 p-calendar .p-icon {
     height: 35px;
     width: 35px;
@@ -18,4 +21,28 @@ p-calendar .p-icon {
 
 p-button .p-button-icon {
     font-size: 2rem;
+}
+
+.p-tabview .p-tabview-panels {
+    background: #62bf66 !important
+}
+
+.scrollwrapper {
+    overflow: scroll;
+    background: black;
+    color: white;
+    border-radius: 5px;
+}
+
+th {
+    width: 75px !important;
+    overflow: hidden;
+}
+
+td {
+    text-align: center;
+}
+
+.missing {
+    background: #f44336;
 }

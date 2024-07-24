@@ -6,11 +6,11 @@
           [readonlyInput]="true" [showOnFocus]="false" inputId="buttondisplay" (ngModelChange)="updateDataByDay()" />
       </div>
       <div class="flex flex-wrap align-content-center justify-content-center bg-orange">
-        <p-button icon="pi pi-angle-left" [rounded]="true" [text]="true" severity="secondary" (click)="previousDay()"/>
+        <p-button icon="pi pi-angle-left" [rounded]="true" [text]="true" severity="secondary" (click)="previousDay()" />
       </div>
       <span class="bg-orange hero-date">{{selectedDate | date : 'shortDate'}}</span>
       <div class="flex flex-wrap align-content-center justify-content-center bg-orange">
-        <p-button icon="pi pi-angle-right" [rounded]="true" [text]="true" severity="secondary" (click)="nextDay()"/>
+        <p-button icon="pi pi-angle-right" [rounded]="true" [text]="true" severity="secondary" (click)="nextDay()" />
       </div>
     </div>
     <div class="hero-title">
@@ -20,23 +20,40 @@
     </div>
   </div>
 </div>
-@for(score of scores; track score; let i = $index) {
-<div class="grid scorecard">
-  <div class="col-2 flex flex-wrap align-content-center justify-content-center">
-    <div class="text-center font-bold p-2">
-      <span class="rank">{{i + 1}}</span>
+<p-tabView>
+  <p-tabPanel header="Daily">
+    @for(score of scores; track score; let i = $index) {
+    <div class="grid scorecard">
+      <div class="col-2 flex flex-wrap align-content-center justify-content-center">
+        <div class="text-center font-bold p-2">
+          <span class="rank">{{i + 1}}</span>
+        </div>
+      </div>
+      <div class="col-8 flex mt-3">
+        <div class="w-2"><img src="{{score.avatarUrl}}" class="w-full border-circle" /></div>
+        <div class="font-bold p-2">
+          <div>{{score.nickname}}</div>
+        </div>
+      </div>
+      <div class="col-2 flex">
+        <div class="flex flex-wrap align-content-center justify-content-center text-right font-bold p-2">
+          <div>{{score.strokes}}</div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="col-8 flex mt-3">
-    <div class="w-2"><img src="{{score.avatarUrl}}" class="w-full border-circle" /></div>
-    <div class="font-bold p-2">
-      <div>{{score.nickname}}</div>
+    }
+  </p-tabPanel>
+  <p-tabPanel header="Monthly">
+    <div class="scrollwrapper">
+      <table id="data-table" class="w-full" style="table-layout: fixed;">
+        <thead>
+          <tr id="name-headers">
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
     </div>
-  </div>
-  <div class="col-2 flex">
-    <div class="flex flex-wrap align-content-center justify-content-center text-right font-bold p-2">
-      <div>{{score.strokes}}</div>
-    </div>
-  </div>
-</div>
-}
+  </p-tabPanel>
+</p-tabView>
