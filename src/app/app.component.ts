@@ -12,7 +12,14 @@ import moment from 'moment';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, FormsModule, CommonModule, CalendarModule, ButtonModule, TabViewModule],
+  imports: [
+    RouterOutlet,
+    FormsModule,
+    CommonModule,
+    CalendarModule,
+    ButtonModule,
+    TabViewModule,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [ConfirmationService, MessageService],
@@ -52,20 +59,20 @@ export class AppComponent {
 
   previousDay() {
     this.selectedDate.setDate(this.selectedDate.getDate() - 1);
-    this.selectedDate = new Date(this.selectedDate.toLocaleDateString())
-    this.updateDataByDay(null)
+    this.selectedDate = new Date(this.selectedDate.toLocaleDateString());
+    this.updateDataByDay(null);
   }
 
   nextDay() {
     this.selectedDate.setDate(this.selectedDate.getDate() + 1);
-    this.selectedDate = new Date(this.selectedDate.toLocaleDateString())
-    this.updateDataByDay(null)
+    this.selectedDate = new Date(this.selectedDate.toLocaleDateString());
+    this.updateDataByDay(null);
   }
 
   updateDataByDay(evt: any) {
-    if(evt) {
-      this.previousSelectedDate = this.selectedDate
-      this.selectedDate = evt
+    if (evt) {
+      this.previousSelectedDate = this.selectedDate;
+      this.selectedDate = evt;
     }
     let callDate = `${this.months[this.selectedDate.getMonth()]}-${
       this.selectedDate.toLocaleDateString().split('/')[1]
@@ -76,34 +83,43 @@ export class AppComponent {
       );
     });
 
-    this.getMonthlyLeaderboard()
+    this.getMonthlyLeaderboard();
   }
 
   getMonthlyLeaderboard() {
     let monthNum = this.selectedDate.getMonth() + 1;
-    let daysInMonth = new Date(this.selectedDate.getFullYear(), monthNum, 0).getDate();
-    this.monthData = []
-    let missingDates = []
+    let daysInMonth = new Date(
+      this.selectedDate.getFullYear(),
+      monthNum,
+      0
+    ).getDate();
+    this.monthData = [];
+    let missingDates = [];
 
-    let now = moment()
-    let selected = moment(this.selectedDate)
+    let now = moment();
+    let selected = moment(this.selectedDate);
 
-    if(`${now.month()+1}-${now.date()}` === `${selected.month()+1}-${selected.date()}`) 
-      daysInMonth = now.date()
-    if(now.month() === selected.month() ) {
-      daysInMonth = now.date()
+    if (
+      `${now.month() + 1}-${now.date()}` ===
+      `${selected.month() + 1}-${selected.date()}`
+    )
+      daysInMonth = now.date();
+    if (now.month() === selected.month()) {
+      daysInMonth = now.date();
     }
 
-    let calls = 0
+    let calls = 0;
     for (let index = 1; index <= daysInMonth; index++) {
-      let callDate = `${this.months[monthNum - 1]}-${index}-${this.selectedDate.getFullYear()}`;
+      let callDate = `${
+        this.months[monthNum - 1]
+      }-${index}-${this.selectedDate.getFullYear()}`;
       this._dataService.getScoresByDay(callDate).subscribe((response: any) => {
         this.monthData.push(...response);
 
-        calls++
-        if(calls === daysInMonth) {
+        calls++;
+        if (calls === daysInMonth) {
           console.log(this.monthData);
-          this.calculateScores(this.monthData, daysInMonth)
+          this.calculateScores(this.monthData, daysInMonth);
         }
       });
     }
@@ -112,54 +128,59 @@ export class AppComponent {
   calculateScores(data: any, daysInMonth: any) {
     const uniqueNames = [...new Set(data.map((item: any) => item.name))];
 
-    this.userScoreData = []
+    this.userScoreData = [];
     for (let index = 0; index < uniqueNames.length; index++) {
       const user = uniqueNames[index];
 
-      let userData = this.monthData.filter((ele: any) => ele.name === user)
+      let userData = this.monthData.filter((ele: any) => ele.name === user);
 
       userData.map((ele: any) => {
-        let userDate = new Date(ele.timestamp.seconds * 1000)
-        let userMomentDate = moment(userDate)
-        ele.date = `${this.months[userMomentDate.month()]}-${userMomentDate.date()}-${userMomentDate.year()}`
-      })
-      
+        let userDate = new Date(ele.timestamp.seconds * 1000);
+        let userMomentDate = moment(userDate);
+        ele.date = `${
+          this.months[userMomentDate.month()]
+        }-${userMomentDate.date()}-${userMomentDate.year()}`;
+      });
+
       // this.userScoreData.push(userData)
-      if(userData.length > daysInMonth - 5) {
-        this.uniqueNames.push(userData[0].nickname)
-        this.userScoreData.push(userData.sort((a: any, b: any) => moment(a.date) > moment(b.date) ? 1 : -1))
-      //   let total = 0;
-      //   for(let x = 0; x < userData.length; x++) {
-      //     total += Number(userData[x].strokes)
-  
-      //     if(x === userData.length - 1) {
-      //       let temp = {
-      //         avatarUrl: userData[x].avatarUrl,
-      //         name: userData[x].name,
-      //         nickname: userData[x].nickname,
-      //         scores: total
-      //       }
-      //       this.userScoreData.push(temp)
-      //     }
-      //   }
+      if (userData.length > daysInMonth - 5) {
+        this.uniqueNames.push(userData[0].nickname);
+        this.userScoreData.push(
+          userData.sort((a: any, b: any) =>
+            moment(a.date) > moment(b.date) ? 1 : -1
+          )
+        );
+        //   let total = 0;
+        //   for(let x = 0; x < userData.length; x++) {
+        //     total += Number(userData[x].strokes)
+
+        //     if(x === userData.length - 1) {
+        //       let temp = {
+        //         avatarUrl: userData[x].avatarUrl,
+        //         name: userData[x].name,
+        //         nickname: userData[x].nickname,
+        //         scores: total
+        //       }
+        //       this.userScoreData.push(temp)
+        //     }
+        //   }
       }
-      
     }
-    this.buildMonthlyTable(this.userScoreData)
+    this.buildMonthlyTable(this.userScoreData);
   }
 
   buildMonthlyTable(d: any) {
-
-
     const tableBody = document.querySelector('#data-table tbody');
     if (tableBody) tableBody.innerHTML = '';
 
-
     const nameHeaders = document.querySelector('#name-headers');
-    nameHeaders!.innerHTML = ''
+    nameHeaders!.innerHTML = '';
     let dateHeader = document.createElement('th');
-    dateHeader.textContent = "Date";
+    dateHeader.textContent = 'Date';
+    dateHeader.classList.add('date-column');
     nameHeaders!.appendChild(dateHeader);
+
+    let totalStrokes = <any>Array(d.length).fill(0);
 
     // Extract unique names for column headers
     const uniqueNames = [...new Set(d.flat().map((obj: any) => obj.name))];
@@ -173,43 +194,59 @@ export class AppComponent {
     });
 
     // Create a map to store data by date and name
-    let dataMap: any
-    dataMap = {}
+    let dataMap: any;
+    dataMap = {};
 
     d.forEach((arr: any) => {
-        arr.forEach((obj: any) => {
-            if (!dataMap[obj.date]) {
-                dataMap[obj.date] = { timestamp: new Date(obj.timestamp.seconds * 1000).toLocaleString() };
-            }
-            dataMap[obj.date][obj.name] = obj;
-        });
+      arr.forEach((obj: any) => {
+        if (!dataMap[obj.date]) {
+          dataMap[obj.date] = {
+            timestamp: new Date(obj.timestamp.seconds * 1000).toLocaleString(),
+          };
+        }
+        dataMap[obj.date][obj.name] = obj;
+      });
     });
 
     // Get sorted dates
-    const sortedDates = Object.keys(dataMap).sort((a: any, b: any) => new Date(a).getTime() - new Date(b).getTime());
+    const sortedDates = Object.keys(dataMap).sort(
+      (a: any, b: any) => new Date(a).getTime() - new Date(b).getTime()
+    );
 
     // Fill the table with sorted data
-    sortedDates.forEach(date => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${date}</td>
+    sortedDates.forEach((date) => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+            <td class="date-column">${date}</td>
         `;
 
-        uniqueNames.forEach((name: any) => {
-            const cell = document.createElement('td');
-            if (dataMap[date][name]) {
-                const obj = dataMap[date][name];
-                if(obj.strokes === "") {
-                  cell.classList.add("missing")
-                }
-                cell.innerHTML = `${obj.strokes}`;
-            } else {
-              cell.classList.add("missing")
-            }
-            row.appendChild(cell);
-        });
+      uniqueNames.forEach((name: any, userIndex) => {
+        const cell = document.createElement('td');
+        if (dataMap[date][name]) {
+          const obj = dataMap[date][name];
+          if (obj.strokes === '') {
+            cell.classList.add('missing');
+          }
+          cell.innerHTML = `${obj.strokes}`;
 
-        tableBody!.appendChild(row);
+          totalStrokes[userIndex] += Number(obj.strokes);
+        } else {
+          cell.classList.add('missing');
+        }
+        row.appendChild(cell);
+      });
+
+      tableBody!.appendChild(row);
+    });
+
+    let totalRow = document
+      .querySelector('#data-table tfoot')!
+      .querySelector('tr');
+
+    totalStrokes.forEach((total: any) => {
+      const cell = document.createElement('td');
+      cell.textContent = total;
+      totalRow!.appendChild(cell);
     });
   }
 }

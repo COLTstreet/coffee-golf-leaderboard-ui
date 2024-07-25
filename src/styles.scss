@@ -46,3 +46,10 @@ td {
 .missing {
     background: #f44336;
 }
+
+.date-column {
+    position: sticky;
+    left: 0;
+    background-color: black;
+    z-index: 1; /* Ensure the date column stays on top */
+}
