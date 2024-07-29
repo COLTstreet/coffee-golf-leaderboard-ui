@@ -241,12 +241,22 @@ export class AppComponent {
 
     let totalRow = document
       .querySelector('#data-table tfoot')!
-      .querySelector('tr');
+      .querySelector('#total-row');
+
+    let avgRow = document
+      .querySelector('#data-table tfoot')!
+      .querySelector('#average-row');
 
     totalStrokes.forEach((total: any) => {
       const cell = document.createElement('td');
       cell.textContent = total;
       totalRow!.appendChild(cell);
+    });
+
+    totalStrokes.forEach((total: any, index: any) => {
+      const cell = document.createElement('td');
+      cell.textContent = (total / d[index].length).toFixed(1)
+      avgRow!.appendChild(cell);
     });
   }
 }
